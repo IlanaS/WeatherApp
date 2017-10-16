@@ -124,6 +124,7 @@ li a.active{
 </head>
 <body onload='initNames();'>
 <script>
+var cookieName = "selectedCity"; 
 var cities=["San Francisco, CA", "Sunnyvale, CA", "San Jose, CA", "Santa Clara, CA"];
 var selectedCity=null;
 var arrDays=null;
@@ -135,8 +136,7 @@ function getCookie(cname) {
     var contentCookie = document.cookie;
     alert ("contentCookie:"+contentCookie);
     for(var i = 0; i < ca.length; i++) {
-       alert ("getCookie:"+i+":"+ca[i]);
-       var c = ca[i];
+        var c = ca[i];
         alert (c);
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
@@ -169,17 +169,16 @@ var addOneCity=function(cityName, active){
     var liCity = document.createElement ("li");
     liCity.appendChild(btnClose);
     liCity.appendChild(aCity);
-    
+    document.getElementById("id_ulCities").appendChild (liCity);
+}    
     btnClose.onclick=function(){
     	liCity.removeChild(aCity);
         liCity.removeChild(btnClose);
+        document.getElementById("id_ulCities").removeChild (liCity);
     };
     
-    document.getElementById("id_ulCities").appendChild (liCity);
-}
-
 var initNames=function(){  
-   var cookieCity = getCookie("selectedCity");
+   var cookieCity = getCookie(cookieName);
    var ulObj=document.getElementById("id_ulCities");
    var bOneCitySel = false;
    for (var i=0; i<cities.length; i++){
@@ -209,10 +208,7 @@ var selCity=function(objCity){
     }
     selectedCity = objCity;
     selectedCity.className="active";
-    alert (selectedCity.innerHTML);
-    var cookieContent = "selectedCity="+selectedCity.innerHTML+";path=/";
-    alert (cookieContent);
-    document.cookie=cookieContent;
+    document.cookie = cookieName+"="+selectedCity.innerHTML+";path=/";
     var scriptObj = document.createElement ("script");
     scriptObj.id="id_currWeatherScript";
     
