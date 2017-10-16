@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+<style>
+* {box-sizing: border-box}
+body {font-family: "Lato", sans-serif;
+    background-color: lightgrey;
+}
+
+div{
+	text-align:center;
+    height:auto;
+}
+
+h4{
+	text-align:center;
+    border: 1px solid blue;
+    max-width:100%;
+    padding: 10px;
+}
+
+div#container{
+    position:absolute;
+}
+
+div#idNav {
+    border: 1px solid blue;
+    float: left;
+    width:30%;
+    padding: 1em;
+    background-color: grey;
+    border-right:none;
+    overflow: none;
+   height:auto;
+}
+
+
+div#idContent {
+    border: 1px solid blue;
+    float: left;
+    width:70%;
+    padding: 1em;
+    background-color: lightblue;
+    border-left:none;
+    overflow: none;
+    height:auto;
+}
+
+p.weatherDay{
+	float:left;
+    border: 1px solid blue;
+}
+
+@media only screen and (max-width:620px) {
+  /* For mobile phones: */
+  div#idNav, div#idContent {
+    width:100%;
+  }
+  p.weatherDay{
+      float:none;
+      width:100%;
+  }
+}
+
+
+div ul {
+    list-style-type: none;
+    padding: 0;
+}
+   
+div ul a {
+    text-decoration: none;
+    padding: 10px;
+    color: white;
+    background-color: lightgrey;
+}
+
+
+li a{
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size:20px;
+}
+
+li {
+    display: block;
+    text-decoration: none;
+}
+
+li a:hover{
+   background-color: lightblue;
+   color: blue;
+}
+
+li a.active{
+   background-color: lightblue;
+   color: black;
+}
+
+.closebtn {
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-top:10px;
+    margin-right: 10px;
+    font-size: 20px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.closebtn:hover {
+    font-size: 24px;
+    color: black;
+}
+
+
+
+
+</style>
+</head>
+<body onload='initNames();'>
+<script>
+var cities=["San Francisco, CA", "Sunnyvale, CA", "San Jose, CA", "Santa Clara, CA"];
+var selectedCity=null;
+var arrDays=null;
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    var contentCookie = document.cookie;
+    alert ("contentCookie:"+contentCookie);
+    for(var i = 0; i < ca.length; i++) {
+       alert ("getCookie:"+i+":"+ca[i]);
+       var c = ca[i];
+        alert (c);
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+
+var addOneCity=function(cityName, active){
+    var txtCity = document.createTextNode (cityName);
+    var aCity = document.createElement("a");
+    aCity.setAttribute ("href","#");
+    aCity.setAttribute ("onclick","selCity(this);");
+    aCity.appendChild(txtCity);
+    if (active){
+        if (selectedCity != null){
+        	selectedCity.className="";
+        }
+       	aCity.className="active";
+        selectedCity=aCity;
+    }
+    var btnClose = document.createElement ("span");
+    btnClose.className="closebtn";
+    btnClose.innerHTML="X";
+
+    var liCity = document.createElement ("li");
+    liCity.appendChild(btnClose);
+    liCity.appendChild(aCity);
+    
+    btnClose.onclick=function(){
+    	liCity.removeChild(aCity);
+        liCity.removeChild(btnClose);
+    };
+    
+    document.getElementById("id_ulCities").appendChild (liCity);
+}
+
+var initNames=function(){  
+   var cookieCity = getCookie("selectedCity");
+   var ulObj=document.getElementById("id_ulCities");
+   var bOneCitySel = false;
+   for (var i=0; i<cities.length; i++){
+   		var selected = false;
+       if (((cookieCity=="")&&(i==0))||(cookieCity == cities[i])){
+       		selected=true;
+            bOneCitySel=true;
+       }
+   	   addOneCity (cities[i], selected);
+   }
+   // To select at least one...
+   if ((bOneCitySel==false)&&(cities.length>0)){
+   	   addOneCity (cities[0], true);
+   }
+   var objNav = document.getElementById("idNav");
+   objNav.appendChild(ulObj); 
+   selCity(selectedCity);
+};
+
+var selCity=function(objCity){
+	if (arrDays != null){
+    	document.getElementById ("idDay").removeChild(arrDays);
+    }
+	var arrActive = document.getElementsByClassName("active");
+    if (selectedCity != null){
+    	selectedCity.className="";//remove prev active class
+    }
+    selectedCity = objCity;
+    selectedCity.className="active";
+    alert (selectedCity.innerHTML);
+    var cookieContent = "selectedCity="+selectedCity.innerHTML+";path=/";
+    alert (cookieContent);
+    document.cookie=cookieContent;
+    var scriptObj = document.createElement ("script");
+    scriptObj.id="id_currWeatherScript";
+    
+   scriptObj.setAttribute("src", "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ selectedCity.innerHTML + "')&format=json&callback=callbackFunction");
+   var objNav = document.getElementById("idNav");
+   objNav.appendChild(scriptObj); 
+
+};
+
+var callbackFunction = function(data) {
+    var objItem = data.query.results.channel.item;
+    document.getElementById("idContentHeader").innerHTML=objItem.title+" Temp:"+objItem.condition.temp+", "+objItem.condition.text;
+    var arrWeekForcast = objItem.forecast;
+    arrDays = document.createElement("div");
+    for (var i=0; i< arrWeekForcast.length; i++){
+      var day = document.createElement("p");
+      day.style.backgroundColor="lightgrey";
+      day.className="weatherDay";
+
+      // For the day date
+      var name = document.createElement("p");
+      name.style.backgroundColor="lightblue";
+      name.style.padding="12px";
+      name.style.borderTop="1px solid blue";
+      name.style.borderBottom="1px solid blue";
+      name.innerHTML = arrWeekForcast[i].day+","+arrWeekForcast[i].date;      
+      day.appendChild (name);
+      
+      var high = document.createElement("p");
+      high.innerHTML = "High: "+arrWeekForcast[i].high;      
+      day.appendChild (high);
+      
+      var low = document.createElement("p");
+      low.innerHTML = "Low: "+arrWeekForcast[i].low;      
+      day.appendChild (low);
+      
+      var text = document.createElement("p");
+      text.innerHTML = arrWeekForcast[i].text;      
+      day.appendChild (text);
+      
+      arrDays.appendChild(day);
+      
+    }
+    document.getElementById ("idDay").appendChild(arrDays);
+    var objScript=document.getElementById("id_currWeatherScript");
+    var objScriptParent = document.getElementById("idNav");
+    objScriptParent.removeChild(objScript);
+  };
+
+	var addCity=function(){
+    	var newCity = document.getElementById("idNewCity");
+        var newCityName = newCity.value;
+        if (newCityName != ""){
+    		cities.push (newCityName);  
+	        addOneCity (newCityName, true);
+   			selCity(selectedCity);
+        }
+	}
+</script>
+<div >
+  <h4 >Weather App By Ilana Shay shay.ilana@gmail.com</h4>
+  <div id="container">
+    <div id="idNav" >
+      <input id="idNewCity" type="text" value="" placeholder="Add a City, State">
+      <button onclick="addCity();">Add City</button>
+      <ul id="id_ulCities"></ul>
+    </div> 
+    <div id="idContent">
+      <h3 id="idContentHeader"> </h3>
+      <div id="idDay"/>
+    </div>
+  </div>
+</div>
+</body>
+</html>
