@@ -152,7 +152,7 @@ var addOneCity=function(cityName, active){
     var txtCity = document.createTextNode (cityName);
     var aCity = document.createElement("a");
     aCity.setAttribute ("href","#");
-    aCity.setAttribute ("onclick","selCity(this);");
+    aCity.setAttribute ("onclick","selCity(this.innerHTML);");
     aCity.appendChild(txtCity);
     if (active){
         if (selectedCity != null){
@@ -223,7 +223,6 @@ var selCity=function(objCity){
 };
 
 var callbackFunction = function(data) {
-    alert ("callback function");
     var objItem = data.query.results.channel.item;
     document.getElementById("idContentHeader").innerHTML=objItem.title+" Temp:"+objItem.condition.temp+", "+objItem.condition.text;
     var arrWeekForcast = objItem.forecast;
