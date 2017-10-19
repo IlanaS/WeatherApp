@@ -189,10 +189,10 @@ var initNames=function(){
    }
 // To select at least one...
    if ((bOneCitySel==false)&&(cities.length>0)){
-   	   selCity (cities[0]);
-  }else{
-       selCity(selectedCity);
+        selectedCity = cities[0];
   }
+
+   selCity(selectedCity);
    var objNav = document.getElementById("idNav");
    objNav.appendChild(ulObj); 
 };
