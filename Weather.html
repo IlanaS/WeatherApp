@@ -222,10 +222,12 @@ var selCity=function(objCity){
 };
 
 var callbackFunction = function(data) {
+    alert ("callback function");
     var objItem = data.query.results.channel.item;
     document.getElementById("idContentHeader").innerHTML=objItem.title+" Temp:"+objItem.condition.temp+", "+objItem.condition.text;
     var arrWeekForcast = objItem.forecast;
     arrDays = document.createElement("div");
+    alert ("callback function: "+rrWeekForcast.length);
     for (var i=0; i< arrWeekForcast.length; i++){
       var day = document.createElement("p");
       day.style.backgroundColor="lightgrey";
