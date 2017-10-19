@@ -146,7 +146,7 @@ function getCookie(cname) {
     return "";
 }
 
-
+// Add one city element
 var addOneCity=function(cityName, active){
     var txtCity = document.createTextNode (cityName);
     var aCity = document.createElement("a");
@@ -191,7 +191,7 @@ var initNames=function(){
    if ((bOneCitySel==false)&&(cities.length>0)){
    	   selCity (cities[0]);
   }else{
- //      selCity(selectedCity);
+       selCity(selectedCity);
   }
    var objNav = document.getElementById("idNav");
    objNav.appendChild(ulObj); 
