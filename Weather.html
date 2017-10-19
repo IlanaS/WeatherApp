@@ -168,12 +168,13 @@ var addOneCity=function(cityName, active){
     liCity.appendChild(btnClose);
     liCity.appendChild(aCity);
     document.getElementById("id_ulCities").appendChild (liCity);
-}    
+    
     btnClose.onclick=function(){
     	liCity.removeChild(aCity);
         liCity.removeChild(btnClose);
         document.getElementById("id_ulCities").removeChild (liCity);
     };
+}
     
 var initNames=function(){  
    var cookieCity = getCookie(cookieName);
