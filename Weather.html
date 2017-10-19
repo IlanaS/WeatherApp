@@ -227,7 +227,7 @@ var callbackFunction = function(data) {
     document.getElementById("idContentHeader").innerHTML=objItem.title+" Temp:"+objItem.condition.temp+", "+objItem.condition.text;
     var arrWeekForcast = objItem.forecast;
     arrDays = document.createElement("div");
-    alert ("callback function: "+rrWeekForcast.length);
+    alert ("callback function:"+arrWeekForcast.length);
     for (var i=0; i< arrWeekForcast.length; i++){
       var day = document.createElement("p");
       day.style.backgroundColor="lightgrey";
