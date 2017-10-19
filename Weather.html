@@ -184,9 +184,10 @@ var initNames=function(){
    var bOneCitySel = false;
    for (var i=0; i<cities.length; i++){
    		var selected = false;
-       if (((cookieCity=="")&&(i==0))||(cookieCity == cities[i])){
+       if (cookieCity == cities[i]){
        		selected=true;
             bOneCitySel=true;
+            selectedCity=cities[i];
        }
    	   addOneCity (cities[i], selected);
    }
