@@ -152,7 +152,7 @@ var addOneCity=function(cityName, active){
     var txtCity = document.createTextNode (cityName);
     var aCity = document.createElement("a");
     aCity.setAttribute ("href","#");
-    aCity.setAttribute ("onclick","selCity(this.innerHTML);");
+    aCity.setAttribute ("onclick","selCity(cityName);");
     aCity.appendChild(txtCity);
     if (active){
         if (selectedCity != null){
