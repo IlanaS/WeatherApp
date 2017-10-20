@@ -269,8 +269,8 @@ var callbackFunction = function(data) {
         var newCityName = newCity.value;
         if (newCityName != ""){
     		cities.push (newCityName);  
-	        addOneCity (newCityName, true);
-   			selCity(selectedCity);
+	        var elemAddedCity = addOneCity (newCityName, true);
+            elemAddedCity.click();
         }
 	}
 </script>
