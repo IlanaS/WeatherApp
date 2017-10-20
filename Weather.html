@@ -175,52 +175,36 @@ var addOneCity=function(cityName, active){
         liCity.removeChild(btnClose);
         document.getElementById("id_ulCities").removeChild (liCity);
     };
+    return aCity;
 }
     
 var initNames=function(){  
    var cookieCity = getCookie(cookieName);
    alert ("cookieCity="+cookieCity);
    var ulObj=document.getElementById("id_ulCities");
-   var bOneCitySel = false;
+   var elemSelCity, elemFstCity;
    for (var i=0; i<cities.length; i++){
-   		var selected = false;
-       if (cookieCity == cities[i]){
-       		selected=true;
-            bOneCitySel=true;
-            selectedCity=cities[i];
+       var elemCurrCity = addOneCity (cities[i], (cookieCity == cities[i]));
+       if (i==0){
+           elemFstCity = elemCurrCity;
        }
-   	   addOneCity (cities[i], selected);
+       if (cookieCity == cities[i]){
+           elemSelCity  = elemCurrCity;
+           selectedCity = cities[i];
+      }
    }
 // To select at least one...
-   if ((bOneCitySel==false)&&(cities.length>0)){
-        selectedCity = cities[0];
-  }
-  selCityName (cityName);
+   if (elemSelCity==undefined){
+       elemSelCity=elemFstCity;
+       selectedCity = cities[0];
+   }
+   if (elemSelCity!=undefined){
+    elemSelCity.click();
+   }
  };
 
-
-var selCityName=function(nameCity){
-    try{
-    var objNav = document.getElementById("idNav");
-    objNav.appendChild(ulObj); 
-    var allCitiesElem = document.getElementById("id_ulCities").childNodes;
-    var elemCity;
-    allCitiesElem.forEach (function(node, index){
-            if (node.innerHTML==cityName){
-                elemCity = node;
-                break;
-            }
-        });
-        if (elemCity != undefined){
-            selCityObj(elemCity);
-        }
-    }catch (err){
-        alert (err.message);
-    }
-}
-
 var selCityObj=function(objCity){
-    alert ("selCity:"+objCity.innerHTML);
+    alert ("selCityObj:"+objCity.innerHTML);
 	if (arrDays != null){
     	document.getElementById ("idDay").removeChild(arrDays);
     }
@@ -237,7 +221,6 @@ var selCityObj=function(objCity){
    scriptObj.setAttribute("src", "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ selectedCity.innerHTML + "')&format=json&callback=callbackFunction");
    var objNav = document.getElementById("idNav");
    objNav.appendChild(scriptObj); 
-
 };
 
 var callbackFunction = function(data) {
