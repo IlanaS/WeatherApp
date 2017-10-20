@@ -128,6 +128,7 @@ var cookieName = "IlanaWeatherAppSelectedCity";
 var cities=["San Francisco, CA", "Sunnyvale, CA", "San Jose, CA", "Santa Clara, CA"];
 var selectedCity=null;
 var arrDays=null;
+var elemSelCity;
 
 
 function getCookie(cname) {
@@ -182,7 +183,7 @@ var initNames=function(){
    var cookieCity = getCookie(cookieName);
    alert ("cookieCity="+cookieCity);
    var ulObj=document.getElementById("id_ulCities");
-   var elemSelCity, elemFstCity;
+   var elemFstCity;
    for (var i=0; i<cities.length; i++){
        var elemCurrCity = addOneCity (cities[i], (cookieCity == cities[i]));
        if (i==0){
@@ -198,8 +199,9 @@ var initNames=function(){
        elemSelCity=elemFstCity;
        selectedCity = cities[0];
    }
+
    if (elemSelCity!=undefined){
-    elemSelCity.click();
+    selCityObj(elemSelCity);
    }
  };
 
@@ -209,8 +211,8 @@ var selCityObj=function(objCity){
     	document.getElementById ("idDay").removeChild(arrDays);
     }
 	var arrActive = document.getElementsByClassName("active");
-    if (selectedCity != null){
-    	selectedCity.className="";//remove prev active class
+    if (elemSelCity != null){
+    	elemSelCity.className="";//remove prev active class
     }
     selectedCity = objCity.innerHTML;
     objCity.className="active";
@@ -219,7 +221,6 @@ var selCityObj=function(objCity){
     scriptObj.id="id_currWeatherScript";
    var strQuery = "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ selectedCity + "')&format=json&callback=callbackFunction"; 
    scriptObj.setAttribute("src", strQuery); 
-   // "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ selectedCity.innerHTML + "')&format=json&callback=callbackFunction");
    var objNav = document.getElementById("idNav");
    objNav.appendChild(scriptObj); 
 };
@@ -229,7 +230,6 @@ var callbackFunction = function(data) {
     document.getElementById("idContentHeader").innerHTML=objItem.title+" Temp:"+objItem.condition.temp+", "+objItem.condition.text;
     var arrWeekForcast = objItem.forecast;
     arrDays = document.createElement("div");
-    alert ("callback function:"+arrWeekForcast.length);
     for (var i=0; i< arrWeekForcast.length; i++){
       var day = document.createElement("p");
       day.style.backgroundColor="lightgrey";
@@ -270,8 +270,8 @@ var callbackFunction = function(data) {
         var newCityName = newCity.value;
         if (newCityName != ""){
     		cities.push (newCityName);  
-	        var elemAddedCity = addOneCity (newCityName, true);
-            elemAddedCity.click();
+	        elemSelCity = addOneCity (newCityName, true);
+            selCityObj(elemSelCity);
         }
 	}
 </script>
