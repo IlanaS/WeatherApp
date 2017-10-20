@@ -125,7 +125,7 @@ li a.active{
 <body onload='initNames();'>
 <script>
 var cookieName = "IlanaWeatherAppSelectedCity"; 
-var cities=["San Francisco, CA", "Sunnyvale, CA", "San Jose, CA", "Santa Clara, CA"];
+var cities=["San Francisco CA", "Sunnyvale CA", "San Jose CA", "Santa Clara CA"];
 var selectedCity=null;
 var arrDays=null;
 var elemSelCity;
@@ -278,8 +278,8 @@ var callbackFunction = function(data) {
         var newCityName = newCity.value;
         if (newCityName != ""){
     		cities.push (newCityName);  
-	        elemSelCity = addOneCity (newCityName, true);
-            selCityObj(elemSelCity);
+	        var elemNewCity = addOneCity (newCityName, true);
+            selCityObj(elemNewCity);
         }
 	}
 </script>
