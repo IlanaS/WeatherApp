@@ -217,8 +217,9 @@ var selCityObj=function(objCity){
     document.cookie = cookieName+"="+objCity.innerHTML+";path=/";
     var scriptObj = document.createElement ("script");
     scriptObj.id="id_currWeatherScript";
-    
-   scriptObj.setAttribute("src", "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ selectedCity.innerHTML + "')&format=json&callback=callbackFunction");
+   var strQuery = "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ selectedCity.innerHTML + "')&format=json&callback=callbackFunction"; 
+   scriptObj.setAttribute("src", strQuery); 
+   // "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ selectedCity.innerHTML + "')&format=json&callback=callbackFunction");
    var objNav = document.getElementById("idNav");
    objNav.appendChild(scriptObj); 
 };
