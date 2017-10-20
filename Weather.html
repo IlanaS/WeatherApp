@@ -125,7 +125,7 @@ li a.active{
 <body onload='initNames();'>
 <script>
 var cookieName = "IlanaWeatherAppSelectedCity"; 
-var cities=["San Francisco, CA", "Sunnyvale, CA", "San Jose, CA", "Santa Clara, CA"];
+var cities=["San Francisco CA", "Sunnyvale CA", "San Jose CA", "Santa Clara CA"];
 var selectedCity=null;
 var arrDays=null;
 var elemSelCity;
@@ -223,7 +223,7 @@ var selCityObj=function(objCity){
    var strQuery = "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ selectedCity + "')&format=json&callback=callbackFunction"; 
    scriptObj.setAttribute("src", strQuery);
    // Remove previous script element
-   var prevScriptElem = document.getElementById (idElemWeatherScript);
+   var prevScriptElem = document.getElementById ("idElemWeatherScript");
    if ((prevScriptElem != undefined) && (prevScriptElem != null)){
         document.removeChild ( prevScriptElem );
    }
