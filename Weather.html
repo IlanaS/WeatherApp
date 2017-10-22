@@ -135,7 +135,6 @@ function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
     var contentCookie = document.cookie;
-    alert ("getCookie:"+contentCookie);
     for(var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) == ' ') {
@@ -181,7 +180,6 @@ var addOneCity=function(cityName, active){
     
 var initNames=function(){  
    var cookieCity = getCookie(cookieName);
-   alert ("cookieCity="+cookieCity);
    var ulObj=document.getElementById("id_ulCities");
    var elemFstCity;
    for (var i=0; i<cities.length; i++){
@@ -206,7 +204,6 @@ var initNames=function(){
  };
 
 var selCityObj=function(objCity){
-    alert ("selCityObj:"+objCity.innerHTML);
 	if (arrDays != null){
     	document.getElementById ("idDay").removeChild(arrDays);
     }
