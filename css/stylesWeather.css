@@ -1,0 +1,112 @@
+* {box-sizing: border-box}
+body {font-family: "Lato", sans-serif;
+    background-color: lightgrey;
+}
+
+div{
+	text-align:center;
+    height:auto;
+}
+
+h4{
+	text-align:center;
+    border: 1px solid blue;
+    max-width:100%;
+    padding: 10px;
+}
+
+div#container{
+    position:absolute;
+}
+
+div#idNav {
+    border: 1px solid blue;
+    float: left;
+    width:30%;
+    padding: 1em;
+    background-color: grey;
+    border-right:none;
+    overflow: none;
+   height:auto;
+}
+
+
+div#idContent {
+    border: 1px solid blue;
+    float: left;
+    width:70%;
+    padding: 1em;
+    background-color: lightblue;
+    border-left:none;
+    overflow: none;
+    height:auto;
+}
+
+p.weatherDay{
+	float:left;
+    border: 1px solid blue;
+}
+
+@media only screen and (max-width:620px) {
+  /* For mobile phones: */
+  div#idNav, div#idContent {
+    width:100%;
+  }
+  p.weatherDay{
+      float:none;
+      width:100%;
+  }
+}
+
+
+div ul {
+    list-style-type: none;
+    padding: 0;
+}
+   
+div ul a {
+    text-decoration: none;
+    padding: 10px;
+    color: white;
+    background-color: lightgrey;
+}
+
+
+li a{
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size:20px;
+}
+
+li {
+    display: block;
+    text-decoration: none;
+}
+
+li a:hover{
+   background-color: lightblue;
+   color: blue;
+}
+
+li a.active{
+   background-color: lightblue;
+   color: black;
+}
+
+.closebtn {
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-top:10px;
+    margin-right: 10px;
+    font-size: 20px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.closebtn:hover {
+    font-size: 24px;
+    color: black;
+}
+
