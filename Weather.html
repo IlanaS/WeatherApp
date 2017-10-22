@@ -214,6 +214,7 @@ var selCityObj=function(objCity){
     if (elemSelCity != undefined){
     	elemSelCity.className="";//remove prev active class
     }
+    elemSelCity = objCity;
     selectedCity = objCity.innerHTML;
     objCity.className="active";
     document.cookie = cookieName+"="+objCity.innerHTML+";path=/";
@@ -222,14 +223,8 @@ var selCityObj=function(objCity){
     scriptObj.id="id_currWeatherScript";
    var strQuery = "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ selectedCity + "')&format=json&callback=callbackFunction"; 
    scriptObj.setAttribute("src", strQuery);
-   // Remove previous script element
-   var prevScriptElem = document.getElementById ("idElemWeatherScript"); 
-   if ((prevScriptElem != undefined) && (prevScriptElem != null)){
-        document.removeChild ( prevScriptElem );
-   }
-   // Add new script element to DOM
    var objNav = document.getElementById("idNav");
-   objNav.id="idElemWeatherScript";
+   // Add new script element to DOM
    objNav.appendChild(scriptObj); 
 };
 
@@ -265,12 +260,13 @@ var callbackFunction = function(data) {
       day.appendChild (text);
       
       arrDays.appendChild(day);
-      
     }
     document.getElementById ("idDay").appendChild(arrDays);
+
+    // Remove previous script element
     var objScript=document.getElementById("id_currWeatherScript");
     var objScriptParent = document.getElementById("idNav");
-    if (objScript != null){
+    if (objScriptParent != null){
         objScriptParent.removeChild(objScript);
     }
   };
