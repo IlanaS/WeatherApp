@@ -270,7 +270,9 @@ var callbackFunction = function(data) {
     document.getElementById ("idDay").appendChild(arrDays);
     var objScript=document.getElementById("id_currWeatherScript");
     var objScriptParent = document.getElementById("idNav");
-    objScriptParent.removeChild(objScript);
+    if (objScript != null){
+        objScriptParent.removeChild(objScript);
+    }
   };
 
 	var addCity=function(){
