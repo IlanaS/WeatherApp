@@ -4,7 +4,7 @@ var cookieName = "IlanaWeatherAppSelectedCity";
 var cities=["San Francisco CA", "Sunnyvale CA", "San Jose CA", "Santa Clara CA"];
 // To save city between sessions, it will need to be from the pre selected cities
 var nameSelCity=null;// Name of the selected city
-var arrDays=null;
+var elem10Days=null;
 var elemSelCity=null;//HTML Element of the selected city
 
 // Retrieve the selected city that was saved by cookie
@@ -115,13 +115,13 @@ var callbackFunction = function(data) {
         }
         // If we already got some results, then we are safe to remove the days elements,
         // Since we immediatelt create new days for the new selected city
-        if (arrDays != null){
-            document.getElementById ("idDay").removeChild(arrDays);
+        if (elem10Days != null){
+            document.getElementById ("idDay").removeChild(elem10Days);
         }
         var objItem = data.query.results.channel.item;
         document.getElementById("idContentHeader").innerHTML=objItem.title+" Temp:"+objItem.condition.temp+", "+objItem.condition.text;
         var arrWeekForcast = objItem.forecast;
-        arrDays = document.createElement("div");
+        elem10Days = document.createElement("div");
         for (var i=0; i< arrWeekForcast.length; i++){
         var day = document.createElement("p");
         day.className="weatherDay";
@@ -145,10 +145,10 @@ var callbackFunction = function(data) {
         text.innerHTML = arrWeekForcast[i].text;      
         day.appendChild (text);
         
-        arrDays.appendChild(day);
+        elem10Days.appendChild(day);
         }
     
-        document.getElementById ("idDay").appendChild(arrDays);
+        document.getElementById ("idDay").appendChild(elem10Days);
 
         // Remove previous script element
         var objScript=document.getElementById("id_currWeatherScript");
