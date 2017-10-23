@@ -22,7 +22,7 @@ div#container{
 div#idNav {
     border: 1px solid blue;
     float: left;
-    width:30%;
+    width:25%;
     padding: 1em;
     background-color: grey;
     border-right:none;
@@ -34,7 +34,7 @@ div#idNav {
 div#idContent {
     border: 1px solid blue;
     float: left;
-    width:70%;
+    width:75%;
     padding: 1em;
     background-color: lightblue;
     border-left:none;
@@ -45,6 +45,23 @@ div#idContent {
 p.weatherDay{
 	float:left;
     border: 1px solid blue;
+    background-color: lightgrey;
+    width : 20%;
+    max-width : 250px;
+    min-width : 200px;
+}
+
+p.dayDate{
+    text-align: center;
+    border-top: 1px solid blue;
+    border-bottom: 1px solid blue;
+    background-color: lightblue;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+p.weatherDayDesc{
+    overflow: hidden;
 }
 
 @media only screen and (max-width:620px) {
@@ -52,10 +69,12 @@ p.weatherDay{
   div#idNav, div#idContent {
     width:100%;
   }
+
   p.weatherDay{
-      float:none;
-      width:100%;
-  }
+      float: none;
+      width: 100%;
+      max-width : 400px;
+    }
 }
 
 

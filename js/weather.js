@@ -1,9 +1,9 @@
 
 var cookieName = "IlanaWeatherAppSelectedCity"; 
 var cities=["San Francisco CA", "Sunnyvale CA", "San Jose CA", "Santa Clara CA"];
-var selectedCity=null;
+var nameSelCity=null;// Name of the selected city
 var arrDays=null;
-var elemSelCity;
+var elemSelCity=null;//HTML Element of the selected city
 
 
 function getCookie(cname) {
@@ -30,11 +30,12 @@ var addOneCity=function(cityName, active){
     aCity.setAttribute ("onclick","selCityObj(this);");
     aCity.appendChild(txtCity);
     if (active){
-        if (selectedCity != null){
-        	selectedCity.className="";
+        if (elemSelCity != null){
+        	elemSelCity.className="";
         }
        	aCity.className="active";
-        selectedCity=aCity;
+        elemSelCity=aCity;
+        nameSelCity=cityName;
     }
     var btnClose = document.createElement ("span");
     btnClose.className="closebtn";
@@ -64,13 +65,13 @@ var initNames=function(){
        }
        if (cookieCity == cities[i]){
            elemSelCity  = elemCurrCity;
-           selectedCity = cities[i];
+           nameSelCity = cities[i];
       }
    }
 // To select at least one...
    if (elemSelCity==undefined){
        elemSelCity=elemFstCity;
-       selectedCity = cities[0];
+       nameSelCity = cities[0];
    }
 
    if (elemSelCity!=undefined){
@@ -79,43 +80,49 @@ var initNames=function(){
  };
 
 var selCityObj=function(objCity){
-	if (arrDays != null){
-    	document.getElementById ("idDay").removeChild(arrDays);
-    }
 	var arrActive = document.getElementsByClassName("active");
     if (elemSelCity != undefined){
     	elemSelCity.className="";//remove prev active class
     }
     elemSelCity = objCity;
-    selectedCity = objCity.innerHTML;
+    nameSelCity = objCity.innerHTML;
     objCity.className="active";
     document.cookie = cookieName+"="+objCity.innerHTML+";path=/";
     // Create new script element
     var scriptObj = document.createElement ("script");
     scriptObj.id="id_currWeatherScript";
-   var strQuery = "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ selectedCity + "')&format=json&callback=callbackFunction"; 
+   var strQuery = "https://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid in (select woeid from geo.places(1) where text='"+ nameSelCity + "')&format=json&callback=callbackFunction"; 
    scriptObj.setAttribute("src", strQuery);
    var objNav = document.getElementById("idNav");
    // Add new script element to DOM
-   objNav.appendChild(scriptObj); 
+   try{
+    objNav.appendChild(scriptObj); 
+   }catch (ex){
+       alert (ex.message);
+   }
 };
 
 var callbackFunction = function(data) {
+    if (data.query.results == null){
+        alert ("No weather results for "+nameSelCity);
+        return;
+    }
+    // If we already got some results, then we are safe to remove the days elements,
+    // Since we immediatelt create new days for the new selected city
+	if (arrDays != null){
+    	document.getElementById ("idDay").removeChild(arrDays);
+    }
     var objItem = data.query.results.channel.item;
     document.getElementById("idContentHeader").innerHTML=objItem.title+" Temp:"+objItem.condition.temp+", "+objItem.condition.text;
     var arrWeekForcast = objItem.forecast;
     arrDays = document.createElement("div");
     for (var i=0; i< arrWeekForcast.length; i++){
       var day = document.createElement("p");
-      day.style.backgroundColor="lightgrey";
       day.className="weatherDay";
 
       // For the day date
       var name = document.createElement("p");
-      name.style.backgroundColor="lightblue";
-      name.style.padding="12px";
-      name.style.borderTop="1px solid blue";
-      name.style.borderBottom="1px solid blue";
+      name.className="dayDate";
       name.innerHTML = arrWeekForcast[i].day+","+arrWeekForcast[i].date;      
       day.appendChild (name);
       
@@ -128,11 +135,13 @@ var callbackFunction = function(data) {
       day.appendChild (low);
       
       var text = document.createElement("p");
+      text.className="weatherDayDesc";
       text.innerHTML = arrWeekForcast[i].text;      
       day.appendChild (text);
       
       arrDays.appendChild(day);
     }
+    
     document.getElementById ("idDay").appendChild(arrDays);
 
     // Remove previous script element
