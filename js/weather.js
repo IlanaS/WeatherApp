@@ -1,11 +1,13 @@
 
-var cookieName = "IlanaWeatherAppSelectedCity"; 
+var cookieName = "IlanaWeatherAppSelectedCity";
+// Pre selected cities 
 var cities=["San Francisco CA", "Sunnyvale CA", "San Jose CA", "Santa Clara CA"];
+// To save city between sessions, it will need to be from the pre selected cities
 var nameSelCity=null;// Name of the selected city
 var arrDays=null;
 var elemSelCity=null;//HTML Element of the selected city
 
-
+// Retrieve the selected city that was saved by cookie
 function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
@@ -54,6 +56,8 @@ var addOneCity=function(cityName, active){
     return aCity;
 }
     
+// This function is being called on page load
+// Create the list of cities elements from the list
 var initNames=function(){  
    var cookieCity = getCookie(cookieName);
    var ulObj=document.getElementById("id_ulCities");
@@ -68,7 +72,8 @@ var initNames=function(){
            nameSelCity = cities[i];
       }
    }
-// To select at least one...
+// To select at least one city if no cookie was saved before
+// Or the last cookie was not from the city list above
    if (elemSelCity==undefined){
        elemSelCity=elemFstCity;
        nameSelCity = cities[0];
@@ -103,54 +108,58 @@ var selCityObj=function(objCity){
 };
 
 var callbackFunction = function(data) {
-    if (data.query.results == null){
-        alert ("No weather results for "+nameSelCity);
-        return;
-    }
-    // If we already got some results, then we are safe to remove the days elements,
-    // Since we immediatelt create new days for the new selected city
-	if (arrDays != null){
-    	document.getElementById ("idDay").removeChild(arrDays);
-    }
-    var objItem = data.query.results.channel.item;
-    document.getElementById("idContentHeader").innerHTML=objItem.title+" Temp:"+objItem.condition.temp+", "+objItem.condition.text;
-    var arrWeekForcast = objItem.forecast;
-    arrDays = document.createElement("div");
-    for (var i=0; i< arrWeekForcast.length; i++){
-      var day = document.createElement("p");
-      day.className="weatherDay";
+    try{
+        if (data.query.results == null){
+            alert ("No weather results for "+nameSelCity);
+            return;
+        }
+        // If we already got some results, then we are safe to remove the days elements,
+        // Since we immediatelt create new days for the new selected city
+        if (arrDays != null){
+            document.getElementById ("idDay").removeChild(arrDays);
+        }
+        var objItem = data.query.results.channel.item;
+        document.getElementById("idContentHeader").innerHTML=objItem.title+" Temp:"+objItem.condition.temp+", "+objItem.condition.text;
+        var arrWeekForcast = objItem.forecast;
+        arrDays = document.createElement("div");
+        for (var i=0; i< arrWeekForcast.length; i++){
+        var day = document.createElement("p");
+        day.className="weatherDay";
 
-      // For the day date
-      var name = document.createElement("p");
-      name.className="dayDate";
-      name.innerHTML = arrWeekForcast[i].day+","+arrWeekForcast[i].date;      
-      day.appendChild (name);
-      
-      var high = document.createElement("p");
-      high.innerHTML = "High: "+arrWeekForcast[i].high;      
-      day.appendChild (high);
-      
-      var low = document.createElement("p");
-      low.innerHTML = "Low: "+arrWeekForcast[i].low;      
-      day.appendChild (low);
-      
-      var text = document.createElement("p");
-      text.className="weatherDayDesc";
-      text.innerHTML = arrWeekForcast[i].text;      
-      day.appendChild (text);
-      
-      arrDays.appendChild(day);
-    }
+        // For the day date
+        var name = document.createElement("p");
+        name.className="dayDate";
+        name.innerHTML = arrWeekForcast[i].day+","+arrWeekForcast[i].date;      
+        day.appendChild (name);
+        
+        var high = document.createElement("p");
+        high.innerHTML = "High: "+arrWeekForcast[i].high;      
+        day.appendChild (high);
+        
+        var low = document.createElement("p");
+        low.innerHTML = "Low: "+arrWeekForcast[i].low;      
+        day.appendChild (low);
+        
+        var text = document.createElement("p");
+        text.className="weatherDayDesc";
+        text.innerHTML = arrWeekForcast[i].text;      
+        day.appendChild (text);
+        
+        arrDays.appendChild(day);
+        }
     
-    document.getElementById ("idDay").appendChild(arrDays);
+        document.getElementById ("idDay").appendChild(arrDays);
 
-    // Remove previous script element
-    var objScript=document.getElementById("id_currWeatherScript");
-    var objScriptParent = document.getElementById("idNav");
-    if (objScriptParent != null){
-        objScriptParent.removeChild(objScript);
+        // Remove previous script element
+        var objScript=document.getElementById("id_currWeatherScript");
+        var objScriptParent = document.getElementById("idNav");
+        if (objScriptParent != null){
+            objScriptParent.removeChild(objScript);
+        }
+    }catch (ex){
+        alert (ex.message);
     }
-  };
+};
 
 	var addCity=function(){
     	var newCity = document.getElementById("idNewCity");
