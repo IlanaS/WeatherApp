@@ -8,12 +8,25 @@ div{
     height:auto;
 }
 
-h4{
+h4#topHeader{
 	text-align:center;
     border: 1px solid blue;
-    max-width:100%;
+    width:100%;
     padding: 10px;
+    background-color: lightgrey;
 }
+
+.sticky{
+    position: fixed;
+    top:0px;
+    z-index: 2;
+    opacity: 0.4;
+    width:90%;
+}
+
+ .sticky + #topHeader {
+    padding-top: 30px;
+  }
 
 div#container{
     position:absolute;

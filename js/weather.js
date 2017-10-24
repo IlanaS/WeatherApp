@@ -1,4 +1,6 @@
 
+
+
 var cookieName = "IlanaWeatherAppSelectedCity";
 // Pre selected cities 
 var cities=["San Francisco CA", "Sunnyvale CA", "San Jose CA", "Santa Clara CA"];
@@ -6,6 +8,9 @@ var cities=["San Francisco CA", "Sunnyvale CA", "San Jose CA", "Santa Clara CA"]
 var nameSelCity=null;// Name of the selected city
 var elem10Days=null;
 var elemSelCity=null;//HTML Element of the selected city
+
+var elemTopHeader ;// The header element that needs to be sticked
+var stickyOffset ; // The int value of the offset
 
 // Retrieve the selected city that was saved by cookie
 function getCookie(cname) {
@@ -57,7 +62,25 @@ var addOneCity=function(cityName, active){
 }
     
 // This function is being called on page load
-// Create the list of cities elements from the list
+var initAll=function(){
+    initNames();
+    initStickHeader();
+}
+
+var stickHeader=function(){
+    if (window.pageYOffset >= stickyOffset) {
+        elemTopHeader.classList.add("sticky")
+      } else {
+        elemTopHeader.classList.remove("sticky");
+      }
+ }
+
+ var initStickHeader=function(){
+    elemTopHeader = document.getElementById("topHeader");
+    stickyOffset = elemTopHeader.offsetTop;
+}
+
+// Initialize Create the list of cities elements from the list
 var initNames=function(){  
    var cookieCity = getCookie(cookieName);
    var ulObj=document.getElementById("id_ulCities");
@@ -82,7 +105,7 @@ var initNames=function(){
    if (elemSelCity!=undefined){
     selCityObj(elemSelCity);
    }
- };
+};
 
 var selCityObj=function(objCity){
 	var arrActive = document.getElementsByClassName("active");
